@@ -60,7 +60,7 @@ And output:
  
  #### Serializing nested class and list
  
- To serialize more complex object the empty constuctor always is required.
+ To serialize more complex object the empty constructor always is required.
  
  ```java
  @Xml
