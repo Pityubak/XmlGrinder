@@ -60,7 +60,7 @@ And output:
  
  #### Serializing nested class and list
  
- 
+ To serialize more complex object the empty constuctor always is required.
  
  ```java
  @Xml
@@ -74,6 +74,10 @@ public class Nested {
     
     @XmlElement
     private String email;
+    
+    //Empty constructor is neccesary
+    public Nested() {
+    }
 
     public Nested(String name, String address, String email) {
         this.name = name;
@@ -99,7 +103,9 @@ public class NestedWithList {
     @XmlList
     private List<Single> singles;
 
-
+    //Empty constructor is necessary
+    public NestedWithList() {
+    }
 
     public NestedWithList(int index, String name, Nested nested, List<Single> singles) {
         this.index = index;
@@ -133,6 +139,16 @@ And the output:
     </singles>
 </NestedWithList>
 
+```
+
+### Deserializing a nested object and/or list:
+
+Deserialization of complex object is similar as above.
+
+```java
+   XmlGrinder grinder = new XmlGrinder();
+
+   NestedWithList nestedWithList=grinder.read(NestedWithList.class, "E:\\nest.xml");
 ```
 #### Limitations
 
