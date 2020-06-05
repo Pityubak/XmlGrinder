@@ -156,4 +156,4 @@ It does not support namespace or any other type of collection. More efficient ve
 and it would be worth to write custom parser/and writer.
 
 #### Note
-This is example project of Liberator 0.2
+This is example project of Liberator 0.3
