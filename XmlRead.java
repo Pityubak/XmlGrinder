@@ -8,8 +8,6 @@ import com.pityubak.xmlgrinder.service.XmlParseService;
 import com.pityubak.xmlgrinder.service.XmlData;
 import com.pityubak.xmlgrinder.service.XmlReadScoutService;
 import com.pityubak.xmlgrinder.service.XmlReadService;
-import com.pityubak.xmlgrinder.service.XmlWriteScoutService;
-import com.pityubak.xmlgrinder.service.XmlWriteService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -78,9 +76,9 @@ public class XmlRead {
         }
         this.classList.addAll(this.data.finalData());
 
-        this.liberator.resetConfig();
-        this.init();
-        this.liberator.injectConcreteClass(new ArrayList<>(this.classList));
+        //this.liberator.reset();
+        this.liberator.init(XmlRead.class);
+        this.liberator.inject(new ArrayList<>(this.classList));
         this.data.clear();
         this.readScoutInterception.clearRemoveableData();
         this.classList.clear();
@@ -94,12 +92,5 @@ public class XmlRead {
         this.classList.add(cl);
     }
 
-    private void init() {
-        this.liberator.addFilter(XmlWriteService.class);
-        this.liberator.addFilter(XmlWriteScoutService.class);
-        this.liberator.addFilter(XmlReadScoutService.class);
-        this.liberator.initConfig();
-
-    }
 
 }

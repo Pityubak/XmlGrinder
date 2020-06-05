@@ -64,7 +64,7 @@ public class XmlReadService {
     }
 
     private void getDataFromRoot(Response response) {
-        final String name = response.getName();
+        final String name = response.getTargetName();
         final List<String> list = this.root.search(name).stream().collect(Collectors.toList());
         this.map.put(name, list);
     }
@@ -75,7 +75,7 @@ public class XmlReadService {
     @MethodElement(ModificationFlag.PRIORITY_NORMAL)
     public List setListElement(XmlList xml, Response response) {
 
-        final String name = response.getName();
+        final String name = response.getTargetName();
 
         final List list = this.map.get(name).stream().collect(Collectors.toList());
 
@@ -101,7 +101,7 @@ public class XmlReadService {
             }
         }
 
-        response.getGenericTypes().forEach(t -> {
+        response.getTargetGenericTypes().forEach(t -> {
 
             for (int i = colSize; i < colSize + size.get(); i++) {
                 Object value = createValue(response, t, name, i);
@@ -126,8 +126,8 @@ public class XmlReadService {
     @MethodElement(ModificationFlag.PRIORITY_NORMAL)
     public <T> T setElementValue(XmlElement element, Response response) {
 
-        final String name = response.getName();
-        final Class<?> type = response.getType();
+        final String name = response.getTargetName();
+        final Class<?> type = response.getTargetType();
         final List<String> elementList = this.map.get(name);
         T value = null;
 
@@ -145,8 +145,8 @@ public class XmlReadService {
 
     @MethodElement(ModificationFlag.PRIORITY_NORMAL)
     public <T> T setAttribute(Attribute attr, Response response) {
-        final String name = response.getName();
-        final Class<?> type = response.getType();
+        final String name = response.getTargetName();
+        final Class<?> type = response.getTargetType();
         final List<String> attrList = this.map.get(name);
 
         T value = null;

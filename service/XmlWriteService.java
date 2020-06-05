@@ -66,8 +66,8 @@ public class XmlWriteService implements Writeable, Establishing, CounterResetabl
     public void registerPath(Xml xml, Response response) throws SAXException {
 
         try {
-            final String name = response.getName();
-            final String fullName = response.getFullClassName();
+            final String name = response.getTargetName();
+            final String fullName = response.getCallerClassFullName();
 
             if (isFirst) {
                 DocumentBuilder builder = db.newDocumentBuilder();
@@ -90,17 +90,18 @@ public class XmlWriteService implements Writeable, Establishing, CounterResetabl
     public void registerAttribute(Attribute attr, Response response) {
 
         if (this.map.containsKey(this.id)) {
-            XmlAttribute attribute = new XmlAttribute(response.getName(), String.valueOf(response.getValue()));
+            XmlAttribute attribute = new XmlAttribute(response.getTargetName(), String.valueOf(response.getValue()));
             this.map.get(this.id).setAttribute(attribute);
         }
     }
 
     @MethodElement(ModificationFlag.PRIORITY_NORMAL)
     public void registerListElement(XmlList xmlList, Response response) {
-        final String name = response.getName();
+        final String name = response.getTargetName();
         final List<?> list = (List<?>) response.getValue();
         //When current root (specify by id) does not contain XmlNode with same name
         //append, but it contains , then created XmlNode add list of value
+        //!!!!!!!nullchecking
         list.forEach(t -> {
             if (this.map.containsKey(this.id)) {
                 XmlNode xmlNode = new XmlNode(name);
@@ -125,7 +126,7 @@ public class XmlWriteService implements Writeable, Establishing, CounterResetabl
     @MethodElement(ModificationFlag.PRIORITY_NORMAL)
     public void registerPlainElement(XmlElement element, Response response) {
 
-        final String name = response.getName();
+        final String name = response.getTargetName();
         final Object value = response.getValue();
 
         if (this.map.containsKey(this.id)) {
@@ -146,7 +147,7 @@ public class XmlWriteService implements Writeable, Establishing, CounterResetabl
                     Object nodeValue = it.next();
 
                     if (nodeValue.toString().contains(value)) {
-                    
+
                         this.removeableList.add(id);
                         it.remove();
                         //XmlList
@@ -172,6 +173,9 @@ public class XmlWriteService implements Writeable, Establishing, CounterResetabl
 
         this.uniques.keySet().forEach(m -> this.iterate(this.map.values(), this.uniques.get(m), this.map.get(m), m));
 
+        this.map.values().forEach(el -> {
+            this.node = el;
+        });
         //remove unnecessary XmlNode from root
         this.removeableList.forEach(t -> {
             if (this.map.keySet().contains(t)) {
@@ -179,7 +183,7 @@ public class XmlWriteService implements Writeable, Establishing, CounterResetabl
             }
         });
         //remain only main XmlNode 
-        this.map.values().forEach(el -> this.node = el);
+
         Output xmlOutput = new XmlOutput(this.dom, this.node);
         xmlOutput.write(path);
         this.map.clear();
@@ -190,7 +194,6 @@ public class XmlWriteService implements Writeable, Establishing, CounterResetabl
 
     }
 
-    
     @Override
     public void create() {
         //XmlNode creation and store it with id

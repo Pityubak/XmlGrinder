@@ -48,10 +48,11 @@ public final class XmlReadScoutService implements Scout {
 
     @MethodElement(ModificationFlag.PRIORITY_LOW)
     public void getNestedClass(XmlElement element, Response response) {
-        final Class<?> type = response.getType();
-        final String name = response.getName();
+        final Class<?> type = response.getTargetType();
+        final String name = response.getTargetName();
         if (!type.isInterface() && !type.isPrimitive() && !type.toString().contains("String")) {
 
+            
             Request request = response.getRequest();
             request.setRequestType(type);
             Object value = request.response(name);
@@ -68,7 +69,7 @@ public final class XmlReadScoutService implements Scout {
     @MethodElement(ModificationFlag.PRIORITY_LOW)
     public void getListElement(XmlList xml, Response response) {
         if (isFirst) {
-            final String name = response.getName();
+            final String name = response.getTargetName();
             final XmlNode parent = this.root.getRoot();
 
             final List<XmlNode> target = parent.getElementsByName(name);
@@ -88,7 +89,7 @@ public final class XmlReadScoutService implements Scout {
                 comp.stream().filter(other -> (this.root.compareTo(node, other))).forEachOrdered(item -> size.getAndDecrement());
             });
 
-            response.getGenericTypes().forEach(t -> {
+            response.getTargetGenericTypes().forEach(t -> {
 
                 for (int i = 0; i < size.get(); i++) {
                     Request request = response.getRequest();

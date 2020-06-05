@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.pityubak</groupId>
     <artifactId>XMLGrinder</artifactId>
-    <version>1.0-Snapshot</version>
+    <version>1.1-Ukulele</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,7 +15,7 @@
         <dependency>
             <groupId>com.pityubak</groupId>
             <artifactId>Liberator</artifactId>
-            <version>0.1-EarlyStart</version>
+            <version>0.3-EarlyStart</version>
         </dependency>
     </dependencies>
 </project>

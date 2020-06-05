@@ -41,7 +41,7 @@ public final class XmlWriteScoutService implements Scout {
     @MethodElement(ModificationFlag.PRIORITY_LOW)
     public void getNestedClass(XmlElement element, Response response) {
 
-        final Object type = response.getType();
+        final Object type = response.getTargetType();
         final Object value = response.getValue();
         if (type.toString().contains("class") && !type.toString().contains("String")) {
             this.temporary.add(value);
@@ -55,7 +55,7 @@ public final class XmlWriteScoutService implements Scout {
 
     @MethodElement(ModificationFlag.PRIORITY_LOW)
     public void getLisElement(XmlList xml, Response response) {
-        final Object type = response.getType();
+        final Object type = response.getTargetType();
 
         if (type.toString().contains("List")) {
             List<?> list = (List<?>) response.getValue();
